@@ -3,16 +3,20 @@
 #include <stdlib.h>
 #include <SDL.h>
 
+
+
+
 int main(void) {
 
   unsigned int randomSeed = 0, worldSize = 0, shitDistance =0, changeSizeFlag = 0, ticks = 0;
   int *ptr, *ptrNew;
 
   //Start SDL
-  SDL_Init( SDL_INIT_EVERYTHING );
+  SDL_Init( SDL_INIT_VIDEO);
 
    //Set up screen
-   screen = SDL_SetVideoMode( 1024, 1024, 32, SDL_SWSURFACE );
+   SDL_Surface *screen;
+   screen = SDL_SetVideoMode( 640, 640, 32, SDL_SWSURFACE );
 
   printf("[]\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/[]\n");
   printf("[]                                                                                          []\n");
@@ -112,6 +116,7 @@ int main(void) {
       changeSizeFlag = 0;
     }
 
+    DrawScreen(screen,i++);
     //print out world
     printf("Clock: %d\n", i);
     for (int i = 0; i<worldSize ; i++){
@@ -124,4 +129,6 @@ int main(void) {
     system("clear");
 
   }
+
+  SDL_Quit()
 }
