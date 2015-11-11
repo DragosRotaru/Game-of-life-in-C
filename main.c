@@ -1,10 +1,18 @@
+//gcc `sdl-config --cflags --libs` -o main main.c
 #include <stdio.h>
 #include <stdlib.h>
+#include <SDL.h>
 
 int main(void) {
 
-  const unsigned int RANDOM_SEED = 0;
-  unsigned int worldSize = 0, changeInWidth = 0, changeInLength = 0; changeSizeFlagLeft = 0, changeSizeFlagRight = 0, changeSizeFlagTop = 0, changeSizeFlagBottom = 0;
+  unsigned int randomSeed = 0, worldSize = 0, shitDistance =0, changeSizeFlag = 0, ticks = 0;
+  int *ptr, *ptrNew;
+
+  //Start SDL
+  SDL_Init( SDL_INIT_EVERYTHING );
+
+   //Set up screen
+   screen = SDL_SetVideoMode( 1024, 1024, 32, SDL_SWSURFACE );
 
   printf("[]\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/[]\n");
   printf("[]                                                                                          []\n");
@@ -43,88 +51,77 @@ int main(void) {
   printf("[]                                                                                          []\n");
   printf("[]/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\[]\n\n\n\n");
 
-  for(;;){
+
+//get user input
     printf("Please provide two integer values in the format 123:456 \n");
-    printf("The first number specifies a seed for the world, the second indicates initial world size \n" );
-    scanf("%d:%d", &RANDOM_SEED, &worldSize );
-    if (RANDOM_SEED > 0 && worldSize > 0){
-      break;
+    printf("The first number specifies a seed for the world, the second indicates initial world size, the third indicates the distance from the edge of the initial world where a shit may spawn, minimum 2 \n" );
+    scanf("%d:%d:%d:%d", &randomSeed, &worldSize, &shitDistance, &ticks );
+
+//initialize the world (create array, zero out and assign random)
+  srand(randomSeed);
+  ptr=(int*)calloc(worldSize*worldSize,sizeof(int));
+  for (int i = shitDistance; i < worldSize - shitDistance; i++){
+    for(int j = shitDistance; j < worldSize - shitDistance; j++){
+      if (rand() % 2 == 0){
+         *(ptr + i*worldSize + j) = 1;
+      }
     }
   }
 
-//initialize the game
-  srand(RANDOM_SEED);
-  int world[worldSize][worldSize];
-  for (int i = 0; i < worldSize; i++){
-    for (int j = 0; j< worldSize; j++){
-      if (i > 1 && i < worldSize - 2 && j > 1 && j < worldSize - 2 && rand() % 2 == 0){
-        world[i][j] = 1;
-      }
-      else world[i][j] = 0;
-    }
-  }
 
-  for(int i = 1;;i++){
-//init new world
-    for(int i = 0;j< worldSize;i++){
-      if(world[i][0] == 1){
-        changeSizeFlagLeft = 1;
-      }
-      if (world[i][worldSize - 1] == 1){
-        changeSizeFlagRight = 1;
-      }
-      if (world[0][i] == 1){
-        changeSizeFlagTop = 1;
-      }
-      if (world[worldSize - 1][i] == 1){
-        changeSizeFlagBottom = 1;
-      }
-    }
-    changeInWidth += (changeSizeFlagRight + changeSizeFlagLeft);
-    changeInLength += (changeSizeFlagTop + changeSizeFlagBottom);
-    int newWorld[worldSize + changeInLength][worldSize + changeInWidth];
-    for (int i = 0; i < worldSize + changeInLength; i++){
-      for (int j = 0; j< worldSize + changeInWidth; j++){
-        newWorld[i][j] = 0;
-      }
-    }
-//check for rules
-    for(int j = 1;j< worldSize - 1 + changeInLength;j++){
-      for(int k = 1;k< worldSize - 1 + changeInWidth;k++){
-        if (world[j][k]){
-          switch (world[j-1][k-1] + world[j-1][k] + world[j-1][k+1] + world[j][k-1] + world[j][k+1] + world[j+1][k-1] + world[j+1][k] + world[j+1][k-1]){
-            case 0: case 1: newWorld[j + changeSizeFlagTop][k + changeSizeFlagLeft] = 0; break;
-            case 2: case 3: newWorld[j + changeSizeFlagTop][k + changeSizeFlagLeft] = 1; break;
-            case 4: case 5: case 6: case 7: case 8: newWorld[j + changeSizeFlagTop][k + changeSizeFlagLeft] = 0; break;
+  for(int i = 1;i<ticks;i++){
+
+    //create new world
+    ptrNew=(int*)calloc(worldSize*worldSize,sizeof(int));
+
+    //check for rules
+    for(int j = 1;j< worldSize - 1;j++){
+      for(int k = 1;k< worldSize - 1;k++){
+        if (*(ptr + j*worldSize + k)){
+          switch (*(ptr + (j - 1)*worldSize + (k - 1)) + *(ptr + (j - 1)*worldSize + k) + *(ptr + (j - 1)*worldSize + (k + 1)) + *(ptr + j*worldSize + (k - 1)) + *(ptr + j*worldSize + (k + 1)) + *(ptr + (j + 1)*worldSize + (k - 1)) + *(ptr + (j + 1)*worldSize + k) + *(ptr + (j + 1)*worldSize + (k + 1))){
+            case 0: case 1: *(ptrNew + j*worldSize + k) = 0; break;
+            case 2: case 3: *(ptrNew + j*worldSize + k) = 1; break;
+            case 4: case 5: case 6: case 7: case 8: *(ptrNew + j*worldSize + k) = 0; break;
           }
         }
-        else if (world[j-1][k-1] + world[j-1][k] + world[j-1][k+1] + world[j][k-1] + world[j][k+1] + world[j+1][k-1] + world[j+1][k] + world[j+1][k-1] == 3){
-          newWorld[j + changeSizeFlagTop][k + changeSizeFlagLeft]=1;
+        else if (*(ptr + (j - 1)*worldSize + (k - 1)) + *(ptr + (j - 1)*worldSize + k) + *(ptr + (j - 1)*worldSize + (k + 1)) + *(ptr + j*worldSize + (k - 1)) + *(ptr + j*worldSize + (k + 1)) + *(ptr + (j + 1)*worldSize + (k - 1)) + *(ptr + (j + 1)*worldSize + k) + *(ptr + (j + 1)*worldSize + (k + 1)) == 3){
+          *(ptrNew + j*worldSize + k) = 1;
         }
       }
     }
+    free(ptr);
+    ptr = ptrNew;
 
-    changeSizeFlagTop = 0;
-    changeSizeFlagBottom = 0;
-    changeSizeFlagLeft = 0;
-    changeSizeFlagRight = 0;
-
-//copy new world elements over to original world array
-    for (int i = 0; i < worldSize; i++){
-      for (int j = 0; j< worldSize; j++){
-        world[i][j] = newWorld[i][j];
+    //check if worldSize should increase
+    for(int i = 0;i< worldSize;i++){
+      if(*(ptr + worldSize + i) || *(ptr + worldSize*(worldSize - 2) + i) || *(ptr + worldSize*i + 1) || *(ptr + worldSize*i - 2)){
+        changeSizeFlag = 1;
       }
     }
+    //increase world size if necessary
+    if(changeSizeFlag){
+      worldSize += 2;
+      ptrNew = ptr;
+      ptr=(int*)calloc(worldSize*worldSize,sizeof(int));
+      for (int i = 1; i < worldSize - 1; i++){
+        for (int j = 1; j< worldSize - 1; j++){
+          *(ptr + i*(worldSize) + j) = *(ptrNew + (i - 1)*(worldSize - 2 ) + (j -1));
+        }
+      }
+      free(ptrNew);
+      changeSizeFlag = 0;
+    }
 
-//print out world
+    //print out world
     printf("Clock: %d\n", i);
     for (int i = 0; i<worldSize ; i++){
       for (int j = 0; j<worldSize ; j++){
-          printf("%d", newWorld[i][j]);
-        }
+        printf("%d", (int)*(ptr + i*worldSize + j));
+      }
       printf("\n" );
     }
     printf("\n\n\n" );
     system("clear");
+
   }
 }
