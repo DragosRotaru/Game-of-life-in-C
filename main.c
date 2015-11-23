@@ -55,6 +55,63 @@ void print_world(int* ptr, int worldSize, int clock){
   system("clear");
 }
 
+int processEvents(SDL_Window *window)
+{
+  SDL_Event event;
+  int done = 0;
+
+  while(SDL_PollEvent(&event))
+  {
+    switch(event.type)
+    {
+      case SDL_WINDOWEVENT_CLOSE:
+      {
+        if(window)
+        {
+          SDL_DestroyWindow(window);
+          window = NULL;
+          done = 1;
+        }
+      }
+      break;
+      case SDL_KEYDOWN:
+      {
+        switch(event.key.keysym.sym)
+        {
+          case SDLK_ESCAPE:
+            done = 1;
+          break;
+        }
+      }
+      break;
+      case SDL_QUIT:
+        //quit out of the game
+        done = 1;
+      break;
+    }
+  }
+
+  return done;
+}
+
+void doRender(SDL_Renderer *renderer)
+{
+  //set the drawing color to blue
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
+  //Clear the screen (to blue)
+  SDL_RenderClear(renderer);
+
+  //set the drawing color to white
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+  SDL_Rect rect = { 0, 0, 200, 200 };
+  SDL_RenderFillRect(renderer, &rect);
+
+  //We are done drawing, "present" or show to the screen what we've drawn
+  SDL_RenderPresent(renderer);
+}
+
 int main(void){
 
   if (SDL_Init(SDL_INIT_VIDEO||SDL_INIT_TIMER) != 0){
@@ -72,11 +129,19 @@ int main(void){
 
   unsigned int randomflag = 0, worldSize = 0, changeSizeFlag = 0, ticks = 0, start = 0;
   int* ptrNew;
-
-  scanf("%d:%d:%d", &randomflag, &worldSize, &ticks );
   int *ptr = initialize_world(randomflag, worldSize);
 
-  while(!start){
+  //Event loop
+  while(!start)
+  {
+    //Check for events
+    start = processEvents(window);
+
+    //Render display
+    doRender(renderer);
+
+    //don't burn up the CPU
+    SDL_Delay(100);
   }
 
   for(int i = 1;i<ticks;i++){
