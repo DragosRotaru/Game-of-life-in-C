@@ -1,5 +1,5 @@
-CFLAGS   = `sdl-config --cflags`
-LDFLAGS  = `sdl-config --libs`
+CFLAGS   = `sdl2-config --cflags`
+LDFLAGS  = `sdl2-config --libs`
 PROG = main
 CXX = gcc
 OBJS   = main.c
