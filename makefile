@@ -1,5 +1,5 @@
-CFLAGS   = -g `sdl2-config --cflags`
-LDFLAGS  = `sdl2-config --libs` -lSDL2_gfx -lSDL2_ttf -lm
+CFLAGS   = `sdl-config --cflags`
+LDFLAGS  = `sdl-config --libs`
 PROG = main
 CXX = gcc
 OBJS   = main.c
@@ -7,13 +7,9 @@ OBJS   = main.c
 # top-level rule to create the program.
 all: $(PROG)
 
-# compiling other source files.
-%.o: %.c %.h defs.h
-	$(CXX) $(CFLAGS) -c $<
-
-# linking the program
+# compiler
 $(PROG): $(OBJS)
-	$(CXX) $(OBJS) -o $(PROG) $(LDFLAGS)
+	$(CXX) $(LDFLAGS) $(CFLAGS) $(OBJS) -o $(PROG) 
 
 # cleaning everything that can be automatically recreated with "make"
 clean:
