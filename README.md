@@ -2,14 +2,11 @@ My implementation of Conway's Game of Life
 
 Requirements:
 
-N/A 
+SDL2
 
 Development goals:
 
 1.Learn the C language by implementing a standard CLI version of the game
 
-2.Add graphics using SDL
+2.Learn SDL and basic graphics
 
-3.Ehance game with custom rules
-
-4.Implement on CUDA
