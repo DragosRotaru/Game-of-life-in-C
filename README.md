@@ -9,8 +9,8 @@ SDL2
 <h2>Development goals:</h2>
 
 <ol>
-  <li>√ Learn the C language by implementing a standard CLI version of the game</li>
-  <li>Learn SDL and basic graphics</li>
-  <li>expand the game with customizeable discrete rules and continuous mode</li>
-  <li>port to android</li>
+  <li>√ Implement a standard CLI version of the game</li>
+  <li>Incorporate 2D graphics using SDL</li>
+  <li>Expand the game with customizeable rules and discrete/continuous modes</li>
+  <li>Port to android</li>
 </ol>
