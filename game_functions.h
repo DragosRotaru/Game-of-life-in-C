@@ -1,14 +1,14 @@
 #ifndef GAME_FUNCTIONS_
 #define GAME_FUNCTIONS_
 
-typedef union _unit_{
+typedef union _cell_{
 	int discrete;
 	float continuous;
-}unit;
+}cell;
 
 typedef struct _world_{
 	int worldSize, worldType;
-	unit* world;
+	cell* world;
 }world;
 
 void initialize_world(int randomflag, world *ptr);

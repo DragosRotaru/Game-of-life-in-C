@@ -5,7 +5,7 @@
 #define WORLD_BORDER 2
 
 void initialize_world(int randomflag, world *ptr){
-	(*ptr).world = (unit*)calloc((*ptr).worldSize*(*ptr).worldSize,sizeof(unit));
+	(*ptr).world = (cell*)calloc((*ptr).worldSize*(*ptr).worldSize,sizeof(cell));
 	if(randomflag){
 		srand(time(NULL));
 		for(int i = WORLD_BORDER; i < (*ptr).worldSize - WORLD_BORDER; i++){
@@ -28,6 +28,7 @@ void rulecheck_world(world *ptr){
 }
 
 int change_size_check(world *ptr){
+
 	return 0;
 }
 
