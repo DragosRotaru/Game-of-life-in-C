@@ -7,8 +7,7 @@ I have been interested in Cellular Automata ever since I stumbled on Conway's ga
 <ol>
   <li>√ Implement a standard CLI version of the game</li>
   <li>Incorporate 2D graphics using SDL</li>
-  <li>Expand the game with customizeable rules and discrete/continuous modes</li>
-  <li>Port to android</li>
+  <li>Expand game with customizeable rules, discrete/continuous modes and infinite or torus universe models</li>
 </ol>
 
 <h3>Requirements:</h3>
