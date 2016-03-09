@@ -7,14 +7,14 @@ typedef union _cell_{
 }cell;
 
 typedef struct _world_{
-	int worldSize, worldType;
+	int ticks, randflag, worldSize, worldType;
 	cell* world;
 }world;
 
-void initialize_world(int randomflag, world *ptr);
+void initialize_world(world *ptr, int randFlag, int worldSize, int worldType);
 
-void update_world(world *worldptr);
+void update_world(world *ptr);
 
-void print_world(world *ptr, int clock);
+void print_world(world *ptr);
 
 #endif
