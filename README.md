@@ -1,15 +1,15 @@
-My implementation of Conway's Game of Life 
+<h1>Enhanced Conway's Game of Life </h1>
 
-Requirements:
+I have been interested in Cellular Automata ever since I stumbled on Conway's game some time ago. I decided the best way to begin exploring is to start with the original.
 
-N/A 
+<h3>Development goals:</h3>
 
-Development goals:
+<ol>
+  <li>√ Implement a standard CLI version of the game</li>
+  <li>Expand game with customizeable rules, discrete/continuous modes and infinite or torus universe models</li>
+  <li>Incorporate 2D graphics using SDL</li>
+</ol>
 
-1.Learn the C language by implementing a standard CLI version of the game
+<h3>Requirements:</h3>
 
-2.Add graphics using SDL
-
-3.Ehance game with custom rules
-
-4.Implement on CUDA
+SDL2
