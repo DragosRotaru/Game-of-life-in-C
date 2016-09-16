@@ -1,3 +1,7 @@
+<h1>Update </h1>
+
+Gave up on this after I implemented the standard version in the CLI. The function which executes the game rules has been left empty. Left here for "historical reference" 
+
 <h1>Enhanced Conway's Game of Life </h1>
 
 I have been interested in Cellular Automata ever since I stumbled on Conway's game some time ago. I decided the best way to begin exploring is to start with the original.
